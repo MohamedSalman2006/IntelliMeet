@@ -1,0 +1,359 @@
+.agenda-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.agenda-main {
+  padding: 2rem;
+}
+
+.agenda-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.agenda-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.agenda-title h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.agenda-title p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.meeting-header {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.meeting-header h2 {
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.meeting-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+.meta-icon {
+  font-size: 1rem;
+}
+
+.agenda-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.agenda-items-section,
+.preparation-section {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.agenda-items-section h3,
+.preparation-section h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.agenda-item {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.item-header h4 {
+  color: white;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.item-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.item-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.item-badge.discussion {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.item-badge.presentation {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.item-badge.analysis {
+  background: rgba(139, 92, 246, 0.2);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.item-badge.decision {
+  background: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.item-badge.brainstorm {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.time-estimate {
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.item-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.participant-prep {
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.participant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.participant-header:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.participant-icon {
+  font-size: 1.1rem;
+  margin-right: 0.75rem;
+}
+
+.participant-name {
+  color: white;
+  font-weight: 500;
+  flex: 1;
+}
+
+.expand-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.expand-btn:hover {
+  color: white;
+}
+
+.prep-tasks {
+  padding: 1rem 1.5rem;
+}
+
+.prep-task {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.task-checkbox {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.prep-task.completed .task-checkbox {
+  color: #4ade80;
+}
+
+.prep-task.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.task-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.agenda-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #4c63d2 0%, #7c3aed 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+}
+
+.action-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.6);
+}
+
+.action-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-icon {
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .agenda-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .meeting-meta {
+    gap: 1rem;
+  }
+  
+  .item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .item-badges {
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .agenda-main {
+    padding: 1rem;
+  }
+  
+  .agenda-title h1 {
+    font-size: 2rem;
+  }
+  
+  .meeting-header {
+    padding: 1.5rem;
+  }
+  
+  .meeting-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .agenda-items-section,
+  .preparation-section {
+    padding: 1.5rem;
+  }
+  
+  .agenda-actions {
+    flex-direction: column;
+  }
+  
+  .action-btn {
+    justify-content: center;
+  }
+}
