@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+print("--- LOADING THE CORRECT INTELLIMEET URLS.PY FILE ---") 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('meetings.urls')),
+    path('api/meetings/', include('meetings.urls')),
 ]

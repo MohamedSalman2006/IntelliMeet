@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Test Form</title>
+    <style>
+        body { font-family: sans-serif; background-color: #222; color: #eee; padding: 2em; }
+        textarea { width: 100%; height: 300px; background-color: #333; color: #fff; border: 1px solid #555; }
+        button { font-size: 1.2em; padding: 0.5em 1em; cursor: pointer; }
+        pre { background-color: #111; padding: 1em; border: 1px solid #444; white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <h1>AI Meeting Buddy - API Tester</h1>
+
+    <label for="jsonData">Paste your JSON data here:</label>
+    <textarea id="jsonData">{
+    "loc1": {
+        "name": "chennai",
+        "calendar": {
+            "timezone": "Asia/Kolkata",
+            "free_slots": [
+                {"start": "2025-09-27T10:00:00", "end": "2025-09-27T12:30:00"},
+                {"start": "2025-09-27T14:00:00", "end": "2025-09-27T16:00:00"}
+            ]
+        }
+    },
+    "loc2": {
+        "name": "germany",
+        "calendar": {
+            "timezone": "Europe/Berlin",
+            "free_slots": [
+                {"start": "2025-09-27T09:00:00", "end": "2025-09-27T11:30:00"},
+                {"start": "2025-09-27T14:00:00", "end": "2025-09-27T15:00:00"}
+            ]
+        }
+    },
+    "duration_minutes": 60
+}</textarea>
+
+    <button id="submitBtn">Suggest Slots</button>
+
+    <h2>API Response:</h2>
+    <pre id="responseArea">Awaiting submission...</pre>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const jsonData = document.getElementById('jsonData').value;
+            const responseArea = document.getElementById('responseArea');
+            const apiUrl = '/api/meetings/suggest-slots/';
+
+            responseArea.textContent = 'Loading...';
+
+            try {
+                // Use the Fetch API to send the POST request
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: jsonData,
+                });
+
+                const result = await response.json();
+                
+                // Display the formatted JSON response
+                responseArea.textContent = JSON.stringify(result, null, 2);
+
+            } catch (error) {
+                responseArea.textContent = `An error occurred: ${error}`;
+            }
+        });
+    </script>
+</body>
+</html>
