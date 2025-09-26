@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API Test Form - Summarizer</title>
+    <style>
+        body { font-family: sans-serif; background-color: #222; color: #eee; padding: 2em; }
+        textarea { width: 100%; height: 300px; background-color: #333; color: #fff; border: 1px solid #555; }
+        button { font-size: 1.2em; padding: 0.5em 1em; cursor: pointer; }
+        pre { background-color: #111; padding: 1em; border: 1px solid #444; white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <h1>AI Meeting Buddy - Note Taker Test</h1>
+    <label for="jsonData">Paste your meeting transcript JSON here:</label>
+    <textarea id="jsonData">{
+    "transcript": "Alright team, let's start. This is the follow-up for the Q3 'Zoho Desk' promotion. Anusha from the Chennai team, can you give us an update? Yes, hi Klaus. The numbers show a 15% increase, but the feedback from key customers in Germany is that the enterprise pricing tier is a bit confusing. Klaus from the German distributor team responded: We agree, the feedback is consistent. We propose simplifying it to a single enterprise price. The Chennai team agrees, that's a good decision. We will rework the pricing page. Anusha added: I will take the action item to create the new mockups for the pricing page and will send it over by next Tuesday. Klaus confirmed: Perfect, that's all we need. We'll wait for the mockups."
+}</textarea>
+
+    <button id="submitBtn">Summarize Transcript</button>
+    <h2>API Response:</h2>
+    <pre id="responseArea">Awaiting submission...</pre>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', async () => {
+            const jsonData = document.getElementById('jsonData').value;
+            const responseArea = document.getElementById('responseArea');
+            const apiUrl = '/api/meetings/summarize/';
+
+            responseArea.textContent = 'Loading...';
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: jsonData,
+                });
+                const result = await response.json();
+                responseArea.textContent = result.notes;
+            } catch (error) {
+                responseArea.textContent = `An error occurred: ${error}`;
+            }
+        });
+    </script>
+</body>
+</html>
