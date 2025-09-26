@@ -6,14 +6,14 @@ function Dashboard({ onNavigate }) {
       <header className="dashboard-header">
         <nav className="dashboard-nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="dashboard-tabs">
-            <button className="tab-btn active">📊 Dashboard</button>
-            <button onClick={() => onNavigate('scheduler')} className="tab-btn">🤖 Smart Scheduler</button>
-            <button onClick={() => onNavigate('agenda')} className="tab-btn">📋 Meeting Agenda</button>
-            <button onClick={() => onNavigate('followup')} className="tab-btn">📈 Follow-Up Board</button>
+            <button className="tab-btn active">Dashboard</button>
+            <button onClick={() => onNavigate('scheduler')} className="tab-btn">Smart Scheduler</button>
+            <button onClick={() => onNavigate('agenda')} className="tab-btn">Meeting Agenda</button>
+            <button onClick={() => onNavigate('followup')} className="tab-btn">Follow-Up Board</button>
           </div>
           <div className="user-menu">
             <button onClick={() => onNavigate('home')} className="btn-secondary">Logout</button>
@@ -32,7 +32,7 @@ function Dashboard({ onNavigate }) {
             <div className="stat-card">
               <div className="stat-header">
                 <h3>Today's Meetings</h3>
-                <span className="stat-icon">📅</span>
+                <span className="stat-icon"></span>
               </div>
               <div className="stat-number">3</div>
               <div className="stat-label">SCHEDULED</div>
@@ -41,7 +41,7 @@ function Dashboard({ onNavigate }) {
             <div className="stat-card">
               <div className="stat-header">
                 <h3>Pending Actions</h3>
-                <span className="stat-icon">⏳</span>
+                <span className="stat-icon"></span>
               </div>
               <div className="stat-number">12</div>
               <div className="stat-label">ITEMS</div>
@@ -50,7 +50,7 @@ function Dashboard({ onNavigate }) {
             <div className="stat-card">
               <div className="stat-header">
                 <h3>Trust Score</h3>
-                <span className="stat-icon">🛡️</span>
+                <span className="stat-icon"></span>
               </div>
               <div className="stat-number">94%</div>
               <div className="stat-label">RELIABILITY</div>
@@ -61,7 +61,7 @@ function Dashboard({ onNavigate }) {
             <div className="recent-meetings">
               <div className="section-header">
                 <h3>Recent Meetings</h3>
-                <span className="section-icon">🔄</span>
+                <span className="section-icon"></span>
               </div>
               <div className="meetings-list">
                 <div className="meeting-item">
@@ -95,11 +95,11 @@ function Dashboard({ onNavigate }) {
               </div>
               <div className="actions-list">
                 <button onClick={() => onNavigate('scheduler')} className="action-btn">
-                  <span className="action-icon">🤖</span>
+                  <span className="action-icon"></span>
                   <span>Smart Scheduler</span>
                 </button>
                 <button onClick={() => onNavigate('followup')} className="action-btn">
-                  <span className="action-icon">👀</span>
+                  <span className="action-icon"></span>
                   <span>View Tasks</span>
                 </button>
               </div>

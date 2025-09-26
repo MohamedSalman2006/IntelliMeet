@@ -6,14 +6,14 @@ function FollowUpBoard({ onNavigate }) {
       <header className="dashboard-header">
         <nav className="dashboard-nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="dashboard-tabs">
-            <button onClick={() => onNavigate('dashboard')} className="tab-btn">📊 Dashboard</button>
-            <button onClick={() => onNavigate('scheduler')} className="tab-btn">🤖 Smart Scheduler</button>
-            <button onClick={() => onNavigate('agenda')} className="tab-btn">📋 Meeting Agenda</button>
-            <button className="tab-btn active">📈 Follow-Up Board</button>
+            <button onClick={() => onNavigate('dashboard')} className="tab-btn"> Dashboard</button>
+            <button onClick={() => onNavigate('scheduler')} className="tab-btn"> Smart Scheduler</button>
+            <button onClick={() => onNavigate('agenda')} className="tab-btn"> Meeting Agenda</button>
+            <button className="tab-btn active"> Follow-Up Board</button>
           </div>
           <div className="user-menu">
             <button onClick={() => onNavigate('home')} className="btn-secondary">Logout</button>
@@ -57,11 +57,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">Sarah Johnson</span>
                     </div>
                     <div className="due-date">
-                      <span className="date-icon">📅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Oct 2, 2024</span>
                     </div>
                   </div>
@@ -76,11 +76,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">Mike Chen</span>
                     </div>
                     <div className="due-date">
-                      <span className="date-icon">📅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Oct 5, 2024</span>
                     </div>
                   </div>
@@ -95,11 +95,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">Emma Davis</span>
                     </div>
                     <div className="due-date">
-                      <span className="date-icon">📅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Oct 8, 2024</span>
                     </div>
                   </div>
@@ -122,11 +122,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">John Smith</span>
                     </div>
                     <div className="due-date">
-                      <span className="date-icon">📅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Sep 30, 2024</span>
                     </div>
                   </div>
@@ -144,11 +144,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">Sarah Johnson</span>
                     </div>
                     <div className="due-date">
-                      <span className="date-icon">📅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Oct 10, 2024</span>
                     </div>
                   </div>
@@ -175,11 +175,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">John Smith</span>
                     </div>
                     <div className="completed-date">
-                      <span className="date-icon">✅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Completed Sep 25</span>
                     </div>
                   </div>
@@ -192,11 +192,11 @@ function FollowUpBoard({ onNavigate }) {
                   </div>
                   <div className="task-meta">
                     <div className="assignee">
-                      <span className="assignee-icon">👤</span>
+                      <span className="assignee-icon"></span>
                       <span className="assignee-name">Sarah Johnson</span>
                     </div>
                     <div className="completed-date">
-                      <span className="date-icon">✅</span>
+                      <span className="date-icon"></span>
                       <span className="date-text">Completed Sep 24</span>
                     </div>
                   </div>

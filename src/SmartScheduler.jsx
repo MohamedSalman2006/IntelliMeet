@@ -6,14 +6,14 @@ function SmartScheduler({ onNavigate }) {
       <header className="dashboard-header">
         <nav className="dashboard-nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="dashboard-tabs">
-            <button onClick={() => onNavigate('dashboard')} className="tab-btn">📊 Dashboard</button>
-            <button className="tab-btn active">🤖 Smart Scheduler</button>
-            <button onClick={() => onNavigate('agenda')} className="tab-btn">📋 Meeting Agenda</button>
-            <button onClick={() => onNavigate('followup')} className="tab-btn">📈 Follow-Up Board</button>
+            <button onClick={() => onNavigate('dashboard')} className="tab-btn"> Dashboard</button>
+            <button className="tab-btn active"> Smart Scheduler</button>
+            <button onClick={() => onNavigate('agenda')} className="tab-btn"> Meeting Agenda</button>
+            <button onClick={() => onNavigate('followup')} className="tab-btn"> Follow-Up Board</button>
           </div>
           <div className="user-menu">
             <button onClick={() => onNavigate('home')} className="btn-secondary">Logout</button>
@@ -64,14 +64,14 @@ function SmartScheduler({ onNavigate }) {
               <div className="form-section">
                 <h3>Import Calendar Data</h3>
                 <button className="upload-btn">
-                  <span className="upload-icon">📁</span>
+                  <span className="upload-icon"></span>
                   Upload JSON
                 </button>
               </div>
 
               <div className="form-section">
                 <button className="suggest-time-btn">
-                  <span className="ai-icon">🤖</span>
+                  <span className="ai-icon"></span>
                   Suggest Optimal Time Slot
                 </button>
               </div>

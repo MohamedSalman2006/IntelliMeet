@@ -6,14 +6,14 @@ function MeetingAgenda({ onNavigate }) {
       <header className="dashboard-header">
         <nav className="dashboard-nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="dashboard-tabs">
-            <button onClick={() => onNavigate('dashboard')} className="tab-btn">📊 Dashboard</button>
-            <button onClick={() => onNavigate('scheduler')} className="tab-btn">🤖 Smart Scheduler</button>
-            <button className="tab-btn active">📋 Meeting Agenda</button>
-            <button onClick={() => onNavigate('followup')} className="tab-btn">📈 Follow-Up Board</button>
+            <button onClick={() => onNavigate('dashboard')} className="tab-btn"> Dashboard</button>
+            <button onClick={() => onNavigate('scheduler')} className="tab-btn"> Smart Scheduler</button>
+            <button className="tab-btn active"> Meeting Agenda</button>
+            <button onClick={() => onNavigate('followup')} className="tab-btn"> Follow-Up Board</button>
           </div>
           <div className="user-menu">
             <button onClick={() => onNavigate('home')} className="btn-secondary">Logout</button>
@@ -184,7 +184,7 @@ function MeetingAgenda({ onNavigate }) {
 
           <div className="agenda-actions">
             <button className="action-btn secondary">
-              <span className="btn-icon">📄</span>
+              <span className="btn-icon"></span>
               Export PDF
             </button>
           </div>

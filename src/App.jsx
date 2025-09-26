@@ -14,7 +14,7 @@ function Home({ onNavigate }) {
       <header className="header">
         <nav className="nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="nav-links">
@@ -41,9 +41,9 @@ function Home({ onNavigate }) {
           <div className="hero-image">
             <div className="meeting-preview">
               <div className="video-call">
-                <div className="participant">👨‍💼</div>
-                <div className="participant">👩‍💼</div>
-                <div className="participant">👨‍💻</div>
+                <div className="participant"></div>
+                <div className="participant"></div>
+                <div className="participant"></div>
               </div>
             </div>
           </div>
@@ -54,22 +54,22 @@ function Home({ onNavigate }) {
         <div className="container">
           <div className="feature-grid">
             <div className="feature-item">
-              <div className="feature-icon">⏰</div>
+              <div className="feature-icon"></div>
               <h3>Effortless Scheduling</h3>
               <p>AI finds the perfect time across global calendars in seconds</p>
             </div>
             <div className="feature-item">
-              <div className="feature-icon">🧠</div>
+              <div className="feature-icon"></div>
               <h3>Intelligent Prep</h3>
               <p>Automated agendas & clear data, delivered before every call</p>
             </div>
             <div className="feature-item">
-              <div className="feature-icon">✅</div>
+              <div className="feature-icon"></div>
               <h3>Decisions & Follow-ups</h3>
               <p>Exact notes, post-action assigned & tracked. Nothing slips.</p>
             </div>
             <div className="feature-item">
-              <div className="feature-icon">🛡️</div>
+              <div className="feature-icon"></div>
               <h3>Build Trust & Momentum</h3>
               <p>Turn action captured achievements into reliable progress</p>
             </div>
@@ -83,7 +83,7 @@ function Home({ onNavigate }) {
             <div className="before">
               <h2>Before IntelliMeet</h2>
               <div className="chaos-visual">
-                <div className="scattered-docs">📄 📧 📋</div>
+                <div className="scattered-docs"></div>
                 <p>Scattered notes, missed follow-ups, wasted time</p>
               </div>
             </div>
@@ -91,9 +91,9 @@ function Home({ onNavigate }) {
               <h2>With IntelliMeet</h2>
               <div className="organized-visual">
                 <div className="dashboard">
-                  <div className="task-item">✅ Q4 Product Strategy - 89%</div>
-                  <div className="task-item">✅ Key Agenda - 76%</div>
-                  <div className="task-item">✅ Action Items - 94%</div>
+                  <div className="task-item">Q4 Product Strategy - 89%</div>
+                  <div className="task-item">Key Agenda - 76%</div>
+                  <div className="task-item">Action Items - 94%</div>
                   <div className="progress-badge">89% Complete</div>
                 </div>
               </div>
@@ -140,12 +140,12 @@ function Home({ onNavigate }) {
           <h2>Testimonials</h2>
           <div className="testimonial-grid">
             <div className="testimonial">
-              <div className="avatar">👩‍💼</div>
+              <div className="avatar"></div>
               <p>"Our cross-border meetings are finally productive! IntelliMeet has cut down our prep time by half and ensures every decision leads to action."</p>
               <cite>— Anja M., Sales Director, GlobalTech Germany</cite>
             </div>
             <div className="testimonial">
-              <div className="avatar">👨‍💼</div>
+              <div className="avatar"></div>
               <p>"I used to dread scheduling across time zones. Now, I just tell the AI what I need, and it handles everything. Game changer!"</p>
               <cite>— Priya K., Head of Partnerships, Zoho Chennai</cite>
             </div>
@@ -165,7 +165,7 @@ function Home({ onNavigate }) {
         <div className="container">
           <div className="footer-content">
             <div className="footer-logo">
-              <span className="logo-icon">🤖</span>
+              <span className="logo-icon"></span>
               <span className="logo-text">IntelliMeet</span>
             </div>
             <div className="footer-links">
@@ -191,7 +191,7 @@ function Pricing({ onNavigate }) {
       <header className="header">
         <nav className="nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="nav-links">
@@ -222,7 +222,7 @@ function About({ onNavigate }) {
       <header className="header">
         <nav className="nav">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
           <div className="nav-links">

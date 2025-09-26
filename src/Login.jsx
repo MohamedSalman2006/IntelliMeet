@@ -6,7 +6,7 @@ function Login({ onNavigate }) {
       <div className="auth-container">
         <div className="auth-header">
           <div className="logo">
-            <span className="logo-icon">🤖</span>
+            <span className="logo-icon"></span>
             <span className="logo-text">IntelliMeet</span>
           </div>
         </div>
@@ -54,7 +54,7 @@ function Login({ onNavigate }) {
             </div>
 
             <button className="btn-google">
-              <span className="google-icon">🔍</span>
+              <span className="google-icon"></span>
               Continue with Google
             </button>
 
