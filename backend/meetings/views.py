@@ -4,10 +4,20 @@ from datetime import datetime
 import pytz
 import os
 import google.generativeai as genai
+import csv
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt 
+from django.conf import settings
 from .models import ActionItem
+
+def get_action_items(request):
+    try:
+        items = ActionItem.objects.all().order_by('-created_at')
+        data = list(items.values('id', 'description', 'assignee', 'status', 'created_at'))
+        return JsonResponse({'action_items': data})
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 def find_common_slots(loc1_name, loc1_data, loc2_name, loc2_data, meeting_duration_minutes=60):
     loc1_tz = pytz.timezone(loc1_data['timezone'])
@@ -151,3 +161,48 @@ def summarize_meeting(request):
     
 def summarize_test_page(request):
     return render(request, 'meetings/summarize_form.html')
+
+def generate_agenda(request):
+    """
+    API endpoint to automatically generate a meeting agenda using data from
+    the database and mock sales files.
+    """
+    agenda = []
+
+    # --- Define paths to data files ---
+    sales_records_path = settings.BASE_DIR / 'data' / 'sales_records.csv'
+
+    try:
+        # --- 1. Get PENDING action items from the DATABASE ---
+        pending_items = ActionItem.objects.filter(status='Pending')
+        for item in pending_items:
+            agenda.append(f"Follow-up on pending action item: {item.description} (Assigned to: {item.assignee})")
+
+        # --- 2. Analyze sales data for trends (from CSV) ---
+        sales_by_product = {}
+        with open(sales_records_path, mode='r') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                product, month, licenses = row['product'], row['month'], int(row['licenses_sold'])
+                if product not in sales_by_product:
+                    sales_by_product[product] = {}
+                sales_by_product[product][month] = licenses
+
+        for product, monthly_sales in sales_by_product.items():
+            if 'September' in monthly_sales and 'August' in monthly_sales:
+                if monthly_sales['September'] < monthly_sales['August']:
+                    aug_sales, sept_sales = monthly_sales['August'], monthly_sales['September']
+                    agenda.append(f"Discuss performance of '{product}': sales dropped from {aug_sales} to {sept_sales}.")
+
+        # --- 3. Add standard agenda items ---
+        if not agenda: # Add a default message if no pending items or sales issues
+            agenda.append("No high-priority items found. Discuss new opportunities.")
+
+        agenda.append("Review current promotions and customer feedback")
+
+        return JsonResponse({'generated_agenda': agenda})
+
+    except FileNotFoundError:
+        return JsonResponse({'error': 'Sales data file not found.'}, status=500)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
