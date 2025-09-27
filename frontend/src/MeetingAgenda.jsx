@@ -23,14 +23,45 @@ function MeetingAgenda({ onNavigate }) {
 
   return (
     <div className="agenda-page">
-      <header className="dashboard-header">{/* ... nav from your file ... */}</header>
+      <header className="dashboard-header">
+        <nav className="dashboard-nav">
+          <div className="logo">
+            <span className="logo-icon"></span>
+            <span className="logo-text">IntelliMeet</span>
+          </div>
+          <div className="dashboard-tabs">
+            <button onClick={() => onNavigate('dashboard')} className="tab-btn">Dashboard</button>
+            <button onClick={() => onNavigate('scheduler')} className="tab-btn">Smart Scheduler</button>
+            <button className="tab-btn active">Meeting Agenda</button>
+            <button onClick={() => onNavigate('followup')} className="tab-btn">Follow-Up Board</button>
+          </div>
+          <div className="user-menu">
+            <button onClick={() => onNavigate('home')} className="btn-secondary">Logout</button>
+          </div>
+        </nav>
+      </header>
       <main className="agenda-main">
         <div className="agenda-container">
           <div className="agenda-title">
             <h1>Meeting Agenda</h1>
             <p>AI-generated agenda with pre-meeting preparation</p>
           </div>
-          <div className="meeting-header">{/* ... meeting header from your file ... */}</div>
+          
+          <div className="meeting-header">
+            <h2>Product Strategy Review</h2>
+            <div className="meeting-meta">
+              <span className="meta-item">
+                <span className="meta-icon"></span>
+              </span> 
+              <span className="meta-item">
+                <span className="meta-icon"></span>
+              </span> 
+              <span className="meta-item">
+                <span className="meta-icon"></span>
+              </span> 
+            </div>
+          </div>
+
           <div className="agenda-content">
             <div className="agenda-items-section">
               <h3>Agenda Items</h3>
@@ -39,15 +70,21 @@ function MeetingAgenda({ onNavigate }) {
               ) : (
                 agendaItems.map((item, index) => (
                   <div className="agenda-item" key={index}>
-                    <div className="item-header"><h4>{item}</h4></div>
+                    <div className="item-header">
+                      <h4>{item}</h4>
+                      <div className="item-badges">
+                        <span className="item-badge discussion">Discussion</span>
+                      </div>
+                    </div>
                   </div>
                 ))
               )}
             </div>
-            <div className="preparation-section">{/* ... static prep section from your file ... */}</div>
+            
+
           </div>
         </div>
-      </main>
+      </main> 
     </div>
   );
 }
