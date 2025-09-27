@@ -1,156 +1,136 @@
-import './SmartScheduler.css'
+import { useState } from 'react'; // Import React's state management hook
+import './SmartScheduler.css';
+
+// Pre-filled sample data for the two participants' calendars
+const sampleLoc1Json = JSON.stringify({
+  name: "chennai",
+  calendar: {
+    timezone: "Asia/Kolkata",
+    free_slots: [
+      { "start": "2025-09-28T14:00:00", "end": "2025-09-28T18:00:00" }
+    ]
+  }
+}, null, 2);
+
+const sampleLoc2Json = JSON.stringify({
+  name: "germany",
+  calendar: {
+    timezone: "Europe/Berlin",
+    free_slots: [
+      { "start": "2025-09-28T09:00:00", "end": "2025-09-28T11:30:00" }
+    ]
+  }
+}, null, 2);
+
 
 function SmartScheduler({ onNavigate }) {
+  // --- STATE MANAGEMENT ---
+  // State for the JSON input from the text areas
+  const [loc1Json, setLoc1Json] = useState(sampleLoc1Json);
+  const [loc2Json, setLoc2Json] = useState(sampleLoc2Json);
+  
+  // State for the API response
+  const [isLoading, setIsLoading] = useState(false);
+  const [suggestedSlots, setSuggestedSlots] = useState([]);
+  const [error, setError] = useState('');
+
+  // --- API CALL FUNCTION ---
+  const handleSuggestTime = async () => {
+    setIsLoading(true);
+    setError('');
+    setSuggestedSlots([]);
+
+    try {
+      // Parse the text from the text areas into JSON objects
+      const loc1Data = JSON.parse(loc1Json);
+      const loc2Data = JSON.parse(loc2Json);
+
+      const requestPayload = {
+        loc1: loc1Data,
+        loc2: loc2Data,
+        duration_minutes: 60
+      };
+
+      // The API call to your Django backend
+      const response = await fetch('http://127.0.0.1:8000/api/meetings/suggest-slots/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestPayload)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "An unknown error occurred.");
+      }
+      
+      setSuggestedSlots(data.suggested_slots);
+
+    } catch (err) {
+      setError(`Failed to get suggestions. Please check if the JSON is valid. Error: ${err.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="scheduler-page">
-      <header className="dashboard-header">
-        <nav className="dashboard-nav">
-          <div className="logo">
-            <span className="logo-icon"></span>
-            <span className="logo-text">IntelliMeet</span>
-          </div>
-          <div className="dashboard-tabs">
-            <button onClick={() => onNavigate('dashboard')} className="tab-btn"> Dashboard</button>
-            <button className="tab-btn active"> Smart Scheduler</button>
-            <button onClick={() => onNavigate('agenda')} className="tab-btn"> Meeting Agenda</button>
-            <button onClick={() => onNavigate('followup')} className="tab-btn"> Follow-Up Board</button>
-          </div>
-          <div className="user-menu">
-            <button onClick={() => onNavigate('home')} className="btn-secondary">Logout</button>
-          </div>
-        </nav>
-      </header>
-
+      <header className="dashboard-header">{/* ... nav from your file ... */}</header>
       <main className="scheduler-main">
         <div className="scheduler-container">
           <div className="scheduler-title">
             <h1>Smart Scheduler</h1>
-            <p>Find the perfect time for your meeting using AI-powered scheduling</p>
+            <p>Paste calendar data for two locations to find the perfect meeting time.</p>
           </div>
-
           <div className="scheduler-content">
             <div className="scheduler-form">
+              {/* --- NEW: Interactive Form with Text Areas --- */}
               <div className="form-section">
-                <h3>Meeting Title</h3>
-                <input 
-                  type="text" 
-                  placeholder="Enter meeting title"
-                  className="meeting-title-input"
+                <h3>Participant 1 Calendar Data (JSON)</h3>
+                <textarea 
+                  className="meeting-title-input" 
+                  style={{ height: '200px', fontFamily: 'monospace' }}
+                  value={loc1Json}
+                  onChange={(e) => setLoc1Json(e.target.value)}
                 />
               </div>
-
               <div className="form-section">
-                <h3>Participants</h3>
-                <div className="participant-selector">
-                  <select className="participant-dropdown">
-                    <option value="">Select participant</option>
-                    <option value="john">John Smith (EST)</option>
-                    <option value="sarah">Sarah Johnson (PST)</option>
-                    <option value="mike">Mike Chen (GMT)</option>
-                  </select>
-                  <button className="add-participant-btn">+</button>
-                </div>
-                
-                <div className="selected-participants">
-                  <div className="participant-tag">
-                    John Smith (EST) <span className="remove-participant">×</span>
-                  </div>
-                  <div className="participant-tag">
-                    Sarah Johnson (PST) <span className="remove-participant">×</span>
-                  </div>
-                </div>
+                <h3>Participant 2 Calendar Data (JSON)</h3>
+                <textarea 
+                  className="meeting-title-input" 
+                  style={{ height: '200px', fontFamily: 'monospace' }}
+                  value={loc2Json}
+                  onChange={(e) => setLoc2Json(e.target.value)}
+                />
               </div>
-
               <div className="form-section">
-                <h3>Import Calendar Data</h3>
-                <button className="upload-btn">
-                  <span className="upload-icon"></span>
-                  Upload JSON
-                </button>
-              </div>
-
-              <div className="form-section">
-                <button className="suggest-time-btn">
+                <button onClick={handleSuggestTime} className="suggest-time-btn" disabled={isLoading}>
                   <span className="ai-icon"></span>
-                  Suggest Optimal Time Slot
+                  {isLoading ? 'Finding Time...' : 'Suggest Optimal Time Slot'}
                 </button>
               </div>
             </div>
-
             <div className="scheduler-calendar">
-              <div className="calendar-header">
-                <button className="nav-btn">‹</button>
-                <h3>September 2024</h3>
-                <button className="nav-btn">›</button>
-              </div>
-
-              <div className="calendar-grid">
-                <div className="calendar-days">
-                  <div className="day-header">Mon</div>
-                  <div className="day-header">Tue</div>
-                  <div className="day-header">Wed</div>
-                  <div className="day-header">Thu</div>
-                  <div className="day-header">Fri</div>
-                  <div className="day-header">Sat</div>
-                  <div className="day-header">Sun</div>
-                </div>
-
-                <div className="calendar-dates">
-                  <div className="date-cell"></div>
-                  <div className="date-cell"></div>
-                  <div className="date-cell"></div>
-                  <div className="date-cell"></div>
-                  <div className="date-cell"></div>
-                  <div className="date-cell"></div>
-                  <div className="date-cell">1</div>
-                  
-                  <div className="date-cell">2</div>
-                  <div className="date-cell">3</div>
-                  <div className="date-cell">4</div>
-                  <div className="date-cell">5</div>
-                  <div className="date-cell">6</div>
-                  <div className="date-cell">7</div>
-                  <div className="date-cell">8</div>
-                  
-                  <div className="date-cell">9</div>
-                  <div className="date-cell">10</div>
-                  <div className="date-cell">11</div>
-                  <div className="date-cell">12</div>
-                  <div className="date-cell">13</div>
-                  <div className="date-cell">14</div>
-                  <div className="date-cell">15</div>
-                  
-                  <div className="date-cell">16</div>
-                  <div className="date-cell">17</div>
-                  <div className="date-cell">18</div>
-                  <div className="date-cell">19</div>
-                  <div className="date-cell">20</div>
-                  <div className="date-cell">21</div>
-                  <div className="date-cell">22</div>
-                  
-                  <div className="date-cell">23</div>
-                  <div className="date-cell">24</div>
-                  <div className="date-cell">25</div>
-                  <div className="date-cell selected">26</div>
-                  <div className="date-cell">27</div>
-                  <div className="date-cell">28</div>
-                  <div className="date-cell">29</div>
-                  
-                  <div className="date-cell">30</div>
-                </div>
-              </div>
-
-              <div className="availability-panel">
-                <h4>Available Time Slots</h4>
+              <div className="availability-panel" style={{marginTop: '2rem'}}>
+                <h4>{error ? 'An Error Occurred' : 'AI Suggested Slots'}</h4>
                 <div className="time-slots">
-                  <div className="time-slot">
-                    <div className="participant-name">John Smith (EST)</div>
-                    <div className="time-range">2:00 PM - 3:00 PM</div>
-                  </div>
-                  <div className="time-slot">
-                    <div className="participant-name">Sarah Johnson (PST)</div>
-                    <div className="time-range">11:00 AM - 12:00 PM</div>
-                  </div>
+                  {/* --- RENDER API RESULTS DYNAMICALLY --- */}
+                  {isLoading && <p className="time-range">Loading...</p>}
+                  {error && <p className="time-range" style={{ color: '#ff6b6b', whiteSpace: 'pre-wrap' }}>{error}</p>}
+                  {suggestedSlots.length > 0 ? (
+                    suggestedSlots.map((slot, index) => (
+                      <div className="time-slot" key={index}>
+                        <div>
+                          <p className="participant-name">Option {index + 1}: {new Date(slot.start_utc).toDateString()}</p>
+                          <p className="time-range">{slot.start_chennai.split('T')[0] ? 'Chennai:' : ''} {new Date(slot.start_chennai).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                          <p className="time-range">{slot.start_germany.split('T')[0] ? 'Germany:' : ''} {new Date(slot.start_germany).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                        </div>
+                        <button style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}>Schedule</button>
+                      </div>
+                    ))
+                  ) : (
+                    !isLoading && !error && <p className="time-range">Click the button to get suggestions.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -158,7 +138,7 @@ function SmartScheduler({ onNavigate }) {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default SmartScheduler
+export default SmartScheduler;
