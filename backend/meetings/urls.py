@@ -9,4 +9,5 @@ urlpatterns = [
     path('action-items/', views.get_action_items, name='get-action-items'),
     path('generate-agenda/', views.generate_agenda, name='generate-agenda'),
     path('schedule-event/', views.schedule_cal_com_event, name='schedule-event'),
+    path('participants/', views.participants_view, name='participants'),
 ]

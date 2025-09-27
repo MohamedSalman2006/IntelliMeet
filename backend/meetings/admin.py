@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import ActionItem, Participant, AvailabilitySlot
 
-# Register your models here.
+admin.site.register(ActionItem)
+admin.site.register(Participant)
+admin.site.register(AvailabilitySlot)

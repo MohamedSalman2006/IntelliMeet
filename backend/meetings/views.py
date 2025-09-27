@@ -10,7 +10,7 @@ import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt 
 from django.conf import settings
-from .models import ActionItem
+from .models import ActionItem, Participant
 
 def get_action_items(request):
     try:
@@ -20,74 +20,61 @@ def get_action_items(request):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-def find_common_slots(loc1_name, loc1_data, loc2_name, loc2_data, meeting_duration_minutes=60):
-    loc1_tz = pytz.timezone(loc1_data['timezone'])
-    loc2_tz = pytz.timezone(loc2_data['timezone'])
-
-    loc1_slots_utc = []
-    for slot in loc1_data['free_slots']:
-        start = loc1_tz.localize(datetime.fromisoformat(slot['start'])).astimezone(pytz.utc)
-        end = loc1_tz.localize(datetime.fromisoformat(slot['end'])).astimezone(pytz.utc)
-        loc1_slots_utc.append({'start': start, 'end': end})
-
-    loc2_slots_utc = []
-    for slot in loc2_data['free_slots']:
-        start = loc2_tz.localize(datetime.fromisoformat(slot['start'])).astimezone(pytz.utc)
-        end = loc2_tz.localize(datetime.fromisoformat(slot['end'])).astimezone(pytz.utc)
-        loc2_slots_utc.append({'start': start, 'end': end})
-
-    common_slots = []
-    for c_slot in loc1_slots_utc:
-        for g_slot in loc2_slots_utc:
-            overlap_start = max(c_slot['start'], g_slot['start'])
-            overlap_end = min(c_slot['end'], g_slot['end'])
-
-            if overlap_start < overlap_end:
-                duration_seconds = (overlap_end - overlap_start).total_seconds()
-                if duration_seconds >= meeting_duration_minutes * 60:
-                    common_slots.append({
-                        'start_utc': overlap_start.isoformat(),
-                        'end_utc': overlap_end.isoformat(),
-                        f'start_{loc1_name}': overlap_start.astimezone(loc1_tz).isoformat(),
-                        f'end_{loc1_name}': overlap_end.astimezone(loc1_tz).isoformat(),
-                        f'start_{loc2_name}': overlap_start.astimezone(loc2_tz).isoformat(),
-                        f'end_{loc2_name}': overlap_end.astimezone(loc2_tz).isoformat()
-                    })
-    
-    return common_slots
-
 @csrf_exempt
 def suggest_meeting_slots(request):
-    
     if request.method != 'POST':
         return JsonResponse({'error': 'Only POST requests are accepted'}, status=405)
 
     try:
-       
         data = json.loads(request.body)
-      
-        loc1_name = data['loc1']['name']
-        loc1_cal_data = data['loc1']['calendar']
-        
-        loc2_name = data['loc2']['name']
-        loc2_cal_data = data['loc2']['calendar']
-   
-        duration = data.get('duration_minutes', 60)
+        participant_ids = data.get('participant_ids', [])
+        if not participant_ids or len(participant_ids) < 2:
+            return JsonResponse({'message': 'Please select at least two participants.'}, status=400)
 
-        common_slots = find_common_slots(loc1_name, loc1_cal_data, loc2_name, loc2_cal_data, duration)
+        # 1. Fetch participants from the database
+        participants = Participant.objects.filter(id__in=participant_ids)
+        p1 = participants[0]
+        p2 = participants[1]
+
+        # 2. Get the availability slots for each participant (they are already in UTC)
+        p1_slots = p1.slots.all()
+        p2_slots = p2.slots.all()
+
+        common_slots = []
+        # 3. Find the overlaps directly with the database objects
+        for slot1 in p1_slots:
+            for slot2 in p2_slots:
+                # The start_time and end_time are already timezone-aware UTC objects
+                overlap_start = max(slot1.start_time, slot2.start_time)
+                overlap_end = min(slot1.end_time, slot2.end_time)
+
+                if overlap_start < overlap_end:
+                    duration = (overlap_end - overlap_start).total_seconds()
+                    if duration >= 3600: # 60 minutes
+                        # Convert to local timezones only when creating the final response
+                        p1_tz = pytz.timezone(p1.timezone)
+                        p2_tz = pytz.timezone(p2.timezone)
+
+                        # Create a dictionary with a simplified key name for frontend
+                        slot_data = {
+                            'start_utc': overlap_start.isoformat(),
+                            'end_utc': overlap_end.isoformat(),
+                            'start_p1': overlap_start.astimezone(p1_tz).isoformat(),
+                            'start_p2': overlap_start.astimezone(p2_tz).isoformat(),
+                            'p1_name': p1.name,
+                            'p2_name': p2.name,
+                            'p1_timezone': p1.timezone, # Added timezone name
+                            'p2_timezone': p2.timezone,
+                        }
+                        common_slots.append(slot_data)
 
         if not common_slots:
-            return JsonResponse({'message': 'No common slots found.'}, status=404)
+            return JsonResponse({'message': 'No common 60-minute slots found.'}, status=404)
 
         return JsonResponse({'suggested_slots': common_slots})
 
-    except (json.JSONDecodeError, KeyError) as e:
-        return JsonResponse({'error': f'Invalid JSON format or missing key: {e}'}, status=400)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-    
-def meeting_test_page(request):
-    return render(request, 'meetings/test_form.html')
 
 @csrf_exempt
 def summarize_meeting(request):
@@ -251,3 +238,24 @@ def schedule_cal_com_event(request):
         except:
             pass
         return JsonResponse({'error': error_detail}, status=500)
+    
+@csrf_exempt
+def participants_view(request):
+    if request.method == 'GET':
+        participants = Participant.objects.all()
+        data = list(participants.values('id', 'name', 'timezone'))
+        return JsonResponse({'participants': data})
+
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        participant = Participant.objects.create(
+            name=data['name'],
+            timezone=data['timezone']
+        )
+        return JsonResponse({'id': participant.id, 'name': participant.name}, status=201)
+    
+def meeting_test_page(request):
+    return render(request, 'meetings/test_form.html')
+
+def summarize_test_page(request):
+    return render(request, 'meetings/summarize_form.html')
