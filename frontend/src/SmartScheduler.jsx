@@ -125,7 +125,7 @@ function SmartScheduler({ onNavigate }) {
                     suggestedSlots.map((slot, index) => (
                       <div className="time-slot" key={index}>
                         <div>
-                          <p className="participant-name">Option {index + 1}</p>
+                          <p className="participant-name">🗓️ Option {index + 1}</p>
                           <p className="time-range">
                             {slot.p1_name}: {new Date(slot.start_p1).toLocaleTimeString('en-US', { 
                               timeZone: slot.p1_timezone, 

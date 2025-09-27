@@ -31,31 +31,25 @@ def suggest_meeting_slots(request):
         if not participant_ids or len(participant_ids) < 2:
             return JsonResponse({'message': 'Please select at least two participants.'}, status=400)
 
-        # 1. Fetch participants from the database
         participants = Participant.objects.filter(id__in=participant_ids)
         p1 = participants[0]
         p2 = participants[1]
 
-        # 2. Get the availability slots for each participant (they are already in UTC)
         p1_slots = p1.slots.all()
         p2_slots = p2.slots.all()
-
+        
         common_slots = []
-        # 3. Find the overlaps directly with the database objects
         for slot1 in p1_slots:
             for slot2 in p2_slots:
-                # The start_time and end_time are already timezone-aware UTC objects
                 overlap_start = max(slot1.start_time, slot2.start_time)
                 overlap_end = min(slot1.end_time, slot2.end_time)
 
                 if overlap_start < overlap_end:
                     duration = (overlap_end - overlap_start).total_seconds()
-                    if duration >= 3600: # 60 minutes
-                        # Convert to local timezones only when creating the final response
+                    if duration >= 3600:
                         p1_tz = pytz.timezone(p1.timezone)
                         p2_tz = pytz.timezone(p2.timezone)
-
-                        # Create a dictionary with a simplified key name for frontend
+                        
                         slot_data = {
                             'start_utc': overlap_start.isoformat(),
                             'end_utc': overlap_end.isoformat(),
@@ -64,7 +58,7 @@ def suggest_meeting_slots(request):
                             'p1_name': p1.name,
                             'p2_name': p2.name,
                             'p1_timezone': p1.timezone, # Added timezone name
-                            'p2_timezone': p2.timezone,
+                            'p2_timezone': p2.timezone, # Added timezone name
                         }
                         common_slots.append(slot_data)
 

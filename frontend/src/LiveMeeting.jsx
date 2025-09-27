@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import './LiveMeeting.css'; // We'll create this file next
+import './LiveMeeting.css';
 
-// This checks if the browser supports the Web Speech API
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = SpeechRecognition ? new SpeechRecognition() : null;
 
 if (recognition) {
-  recognition.continuous = true; // Keep listening even after a pause
-  recognition.interimResults = true; // Get results as the user speaks
+  recognition.continuous = true;
+  recognition.interimResults = true; 
   recognition.lang = 'en-US';
 }
 
@@ -17,7 +16,7 @@ function LiveMeeting({ onNavigate }) {
   const [notes, setNotes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // We use useRef to keep a stable transcript across re-renders
+  
   const transcriptRef = useRef('');
 
   useEffect(() => {
@@ -26,7 +25,6 @@ function LiveMeeting({ onNavigate }) {
       return;
     }
 
-    // This event fires whenever the API gets a result
     recognition.onresult = (event) => {
       let interimTranscript = '';
       let finalTranscript = transcriptRef.current;
@@ -42,7 +40,7 @@ function LiveMeeting({ onNavigate }) {
       setTranscript(finalTranscript + interimTranscript);
     };
 
-    // This event fires when recording is stopped, then we call the API
+
     recognition.onend = () => {
       if (transcriptRef.current) {
         summarizeTranscript(transcriptRef.current);
@@ -54,7 +52,7 @@ function LiveMeeting({ onNavigate }) {
 
   const startRecording = () => {
     if (recognition) {
-      transcriptRef.current = ''; // Reset transcript
+      transcriptRef.current = ''; 
       setTranscript('');
       setNotes('');
       recognition.start();
@@ -65,7 +63,6 @@ function LiveMeeting({ onNavigate }) {
   const stopRecording = () => {
     if (recognition) {
       recognition.stop();
-      // The API call will be triggered by the 'onend' event
     }
   };
 
@@ -90,7 +87,7 @@ function LiveMeeting({ onNavigate }) {
 
   return (
     <div className="live-meeting-page">
-      <header className="dashboard-header">{/* ... Your Nav component would go here ... */}</header>
+      <header className="dashboard-header"></header>
       <main className="live-meeting-main">
         <div className="live-meeting-container">
           <div className="live-meeting-title">
