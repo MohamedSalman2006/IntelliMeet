@@ -5,6 +5,7 @@ import pytz
 import os
 import google.generativeai as genai
 import csv
+import requests
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt 
@@ -206,3 +207,47 @@ def generate_agenda(request):
         return JsonResponse({'error': 'Sales data file not found.'}, status=500)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+@csrf_exempt
+def schedule_cal_com_event(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST requests are accepted'}, status=405)
+
+    try:
+        # --- CONFIGURATION ---
+        CAL_COM_API_KEY = "cal_live_4a85121b813b7cc6fa60f0036f8cc266"
+        EVENT_TYPE_ID = 3476740 # REPLACE WITH YOUR REAL EVENT TYPE ID
+
+        data = json.loads(request.body)
+        start_time = data['start_utc']
+        end_time = data['end_utc']
+
+        api_url = f"https://api.cal.com/v1/bookings?apiKey={CAL_COM_API_KEY}"
+
+        # --- FINAL, CORRECT PAYLOAD STRUCTURE ---
+        payload = {
+            "eventTypeId": EVENT_TYPE_ID,
+            "start": start_time,
+            "end": end_time,
+            "responses": {
+                "email": "test@example.com",
+                "name": "AI Meeting Attendee",
+                "location": "Google Meet"
+            },
+            "timeZone": "UTC",
+            "language": "en",
+            "metadata": {}
+        }
+
+        response = requests.post(api_url, json=payload)
+        response.raise_for_status()
+
+        return JsonResponse({'status': 'success', 'booking_details': response.json()})
+
+    except Exception as e:
+        error_detail = str(e)
+        try:
+            error_detail = response.json()
+        except:
+            pass
+        return JsonResponse({'error': error_detail}, status=500)

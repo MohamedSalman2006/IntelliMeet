@@ -90,12 +90,61 @@ function Dashboard({ onNavigate }) {
           </div>
 
           <div className="dashboard-content">
-             {/* ... rest of your dashboard JSX from your file ... */}
+            <div className="recent-meetings">
+              <div className="section-header">
+                <h3>Recent Meetings</h3>
+                <span className="section-icon"></span>
+              </div>
+              <div className="meetings-list">
+                <div className="meeting-item">
+                  <div className="meeting-info">
+                    <h4>Product Strategy Review</h4>
+                    <p>2 hours ago</p>
+                  </div>
+                  <span className="meeting-status completed">Completed</span>
+                </div>
+                <div className="meeting-item">
+                  <div className="meeting-info">
+                    <h4>Weekly Team Sync</h4>
+                    <p>Yesterday 3:00 PM</p>
+                  </div>
+                  <span className="meeting-status completed">Completed</span>
+                </div>
+                <div className="meeting-item">
+                  <div className="meeting-info">
+                    <h4>Client Presentation</h4>
+                    <p>Tomorrow 10:00 AM</p>
+                  </div>
+                  <span className="meeting-status upcoming">Upcoming</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="quick-actions">
+              <div className="section-header">
+                <h3>Quick Actions</h3>
+                <span className="section-icon">⚡</span>
+              </div>
+              <div className="actions-list">
+                <button onClick={() => onNavigate('scheduler')} className="action-btn">
+                  <span className="action-icon"></span>
+                  <span>Smart Scheduler</span>
+                </button>
+                <button onClick={() => onNavigate('live-meeting')} className="action-btn">
+                  <span className="action-icon"></span>
+                  <span>Start a Meeting</span>
+                </button>
+                <button onClick={() => onNavigate('followup')} className="action-btn">
+                  <span className="action-icon"></span>
+                  <span>View Tasks</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </main>
     </div>
-  );
+  )
 }
 
-export default Dashboard;
+export default Dashboard

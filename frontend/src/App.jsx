@@ -7,6 +7,7 @@ import FollowUpBoard from './FollowUpBoard'
 import Login from './Login'
 import Register from './Register'
 import './App.css'
+import LiveMeeting from './LiveMeeting';
 
 function Home({ onNavigate }) {
   return (
@@ -291,6 +292,7 @@ function App() {
       {currentPage === 'scheduler' && <SmartScheduler onNavigate={navigate} />}
       {currentPage === 'agenda' && <MeetingAgenda onNavigate={navigate} />}
       {currentPage === 'followup' && <FollowUpBoard onNavigate={navigate} />}
+      {currentPage === 'live-meeting' && <LiveMeeting onNavigate={navigate} />}
     </div>
   )
 }

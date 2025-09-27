@@ -1,4 +1,4 @@
-import { useState } from 'react'; // Import React's state management hook
+import { useState } from 'react';
 import './SmartScheduler.css';
 
 // Pre-filled sample data for the two participants' calendars
@@ -24,52 +24,58 @@ const sampleLoc2Json = JSON.stringify({
 
 
 function SmartScheduler({ onNavigate }) {
-  // --- STATE MANAGEMENT ---
-  // State for the JSON input from the text areas
   const [loc1Json, setLoc1Json] = useState(sampleLoc1Json);
   const [loc2Json, setLoc2Json] = useState(sampleLoc2Json);
-  
-  // State for the API response
   const [isLoading, setIsLoading] = useState(false);
   const [suggestedSlots, setSuggestedSlots] = useState([]);
   const [error, setError] = useState('');
+  
+  // 1. Add new state to track the scheduling status
+  const [scheduleStatus, setScheduleStatus] = useState('');
 
-  // --- API CALL FUNCTION ---
   const handleSuggestTime = async () => {
     setIsLoading(true);
     setError('');
     setSuggestedSlots([]);
+    setScheduleStatus(''); // Clear previous status messages
 
     try {
-      // Parse the text from the text areas into JSON objects
       const loc1Data = JSON.parse(loc1Json);
       const loc2Data = JSON.parse(loc2Json);
+      const requestPayload = { loc1: loc1Data, loc2: loc2Data, duration_minutes: 60 };
 
-      const requestPayload = {
-        loc1: loc1Data,
-        loc2: loc2Data,
-        duration_minutes: 60
-      };
-
-      // The API call to your Django backend
       const response = await fetch('http://127.0.0.1:8000/api/meetings/suggest-slots/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestPayload)
       });
-
       const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "An unknown error occurred.");
-      }
-      
+      if (!response.ok) throw new Error(data.message || "An unknown error occurred.");
       setSuggestedSlots(data.suggested_slots);
-
     } catch (err) {
-      setError(`Failed to get suggestions. Please check if the JSON is valid. Error: ${err.message}`);
+      setError(`Failed to get suggestions. Error: ${err.message}`);
     } finally {
       setIsLoading(false);
+    }
+  };
+  
+  // 2. Create the new function to call the scheduling API
+  const handleScheduleClick = async (slot) => {
+    setScheduleStatus('Scheduling...');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/meetings/schedule-event/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          start_utc: slot.start_utc,
+          end_utc: slot.end_utc
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to schedule.');
+      setScheduleStatus('Success! The meeting has been booked via Cal.com.');
+    } catch (err) {
+      setScheduleStatus(`Error: ${err.message}`);
     }
   };
 
@@ -84,7 +90,6 @@ function SmartScheduler({ onNavigate }) {
           </div>
           <div className="scheduler-content">
             <div className="scheduler-form">
-              {/* --- NEW: Interactive Form with Text Areas --- */}
               <div className="form-section">
                 <h3>Participant 1 Calendar Data (JSON)</h3>
                 <textarea 
@@ -114,23 +119,26 @@ function SmartScheduler({ onNavigate }) {
               <div className="availability-panel" style={{marginTop: '2rem'}}>
                 <h4>{error ? 'An Error Occurred' : 'AI Suggested Slots'}</h4>
                 <div className="time-slots">
-                  {/* --- RENDER API RESULTS DYNAMICALLY --- */}
                   {isLoading && <p className="time-range">Loading...</p>}
                   {error && <p className="time-range" style={{ color: '#ff6b6b', whiteSpace: 'pre-wrap' }}>{error}</p>}
-                  {suggestedSlots.length > 0 ? (
-                    suggestedSlots.map((slot, index) => (
-                      <div className="time-slot" key={index}>
-                        <div>
-                          <p className="participant-name">Option {index + 1}: {new Date(slot.start_utc).toDateString()}</p>
-                          <p className="time-range">{slot.start_chennai.split('T')[0] ? 'Chennai:' : ''} {new Date(slot.start_chennai).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                          <p className="time-range">{slot.start_germany.split('T')[0] ? 'Germany:' : ''} {new Date(slot.start_germany).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                        </div>
-                        <button style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}>Schedule</button>
+                  {suggestedSlots.length > 0 && suggestedSlots.map((slot, index) => (
+                    <div className="time-slot" key={index}>
+                      <div>
+                        <p className="participant-name">Option {index + 1}</p>
+                        <p className="time-range">
+                            Chennai: {new Date(slot.start_chennai).toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true })}
+                        </p>
+                        <p className="time-range">
+                            Germany: {new Date(slot.start_germany).toLocaleTimeString('en-GB', { timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit', hour12: true })}
+                        </p>
                       </div>
-                    ))
-                  ) : (
-                    !isLoading && !error && <p className="time-range">Click the button to get suggestions.</p>
-                  )}
+                      <button onClick={() => handleScheduleClick(slot)} style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}>
+                        Schedule
+                      </button>
+                    </div>
+                  ))}
+                  {/* 4. Display the scheduling status message */}
+                  {scheduleStatus && <p className="time-range" style={{marginTop: '1rem', fontWeight: 'bold'}}>{scheduleStatus}</p>}
                 </div>
               </div>
             </div>
